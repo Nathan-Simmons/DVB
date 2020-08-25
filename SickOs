@@ -1,0 +1,8 @@
+* sudo netdiscover
+  - this gets the IP address of the SickOS machine
+  
+* nmap -v -sS -A -T4 <IP ADDRESS> 
+  - This find the open and closed ports for the IP address
+  - the "-sS" is for TCO SYN scan
+  
+ * 
