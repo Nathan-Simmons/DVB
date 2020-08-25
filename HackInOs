@@ -1,0 +1,8 @@
+* sudo netdiscover
+  - FOUND IP address of victom machine
+  
+* nmap -v -sS -A -T4 <IP> 
+  - This find the open and closed ports for the IP address
+  - FOUND 22, 8000 (http-Atct) open ports
+  
+* 
